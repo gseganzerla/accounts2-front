@@ -9,6 +9,7 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
+import Link from 'next/link'
 import { RiAddLine, RiClipboardLine, RiEditLine } from 'react-icons/ri'
 import { IconButton } from '../../components/IconButton'
 import { Page } from '../../components/Page'
@@ -19,7 +20,11 @@ export default function index() {
       <>
         <Flex justify="space-between" mb="8" align="center">
           <Heading size="md">Accounts</Heading>
-          <IconButton icon={RiAddLine}>New Account</IconButton>
+          <Link href="/accounts/create" passHref>
+            <IconButton as="a" icon={RiAddLine}>
+              New Account
+            </IconButton>
+          </Link>
         </Flex>
 
         <Table>

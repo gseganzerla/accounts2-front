@@ -11,7 +11,7 @@ export const theme = extendTheme({
     },
     Input: {
       defaultProps: {
-        colorScheme: 'pink',
+        focusBorderColor: 'pink.500',
       },
     },
     Button: {

@@ -1,3 +1,7 @@
+import { Page } from '../components/Page'
+
 export default function Dashboard() {
-  return <h1>Dashboard</h1>
+  return <Page>
+    <h1>dashboard</h1>
+  </Page>
 }

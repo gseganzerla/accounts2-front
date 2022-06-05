@@ -19,6 +19,11 @@ export const theme = extendTheme({
         colorScheme: 'pink',
       },
     },
+    Heading: {
+      defaultProps: {
+        size: 'md',
+      },
+    },
     Table: {
       defaultProps: {
         colorScheme: 'whiteAlpha',

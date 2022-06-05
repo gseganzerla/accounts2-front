@@ -1,5 +1,5 @@
 import { Stack } from '@chakra-ui/react'
-import { RiAccountCircleLine, RiUserAddLine } from 'react-icons/ri'
+import { RiAccountCircleLine, RiProfileLine, RiUserAddLine, RiUserLine } from 'react-icons/ri'
 import { NavLink } from './NavLink'
 import { NavSection } from './NavSection'
 
@@ -14,11 +14,11 @@ export function SidebarNav() {
           Create
         </NavLink>
       </NavSection>
-      {/* <NavSection title="User">
-        <NavLink href="/forms" icon={RiInputMethodLine}>
+      <NavSection title="User">
+        <NavLink href="/users/profile" icon={RiProfileLine}>
           Profile
         </NavLink>
-      </NavSection> */}
+      </NavSection>
     </Stack>
   )
 }

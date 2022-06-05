@@ -7,7 +7,7 @@ export default function CreateAccount() {
   return (
     <Page>
       <>
-        <Heading size="md">Create Account</Heading>
+        <Heading>Create Account</Heading>
 
         <Divider my="8" color="gray.700" />
 

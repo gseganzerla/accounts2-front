@@ -7,7 +7,7 @@ export default function Profile() {
   return (
     <Page>
       <>
-        <Heading size="md">User Information</Heading>
+        <Heading>User Information</Heading>
 
         <Stack mt="8">
           <Input name="email" label="Email" type="email" />

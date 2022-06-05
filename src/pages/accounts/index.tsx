@@ -19,7 +19,7 @@ export default function index() {
     <Page>
       <>
         <Flex justify="space-between" mb="8" align="center">
-          <Heading size="md">Accounts</Heading>
+          <Heading>Accounts</Heading>
           <Link href="/accounts/create" passHref>
             <IconButton as="a" icon={RiAddLine}>
               New Account

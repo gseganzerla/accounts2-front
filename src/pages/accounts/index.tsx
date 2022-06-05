@@ -48,9 +48,9 @@ export default function index() {
                   <IconButton icon={RiClipboardLine} colorScheme="yellow">
                     Copy
                   </IconButton>
-                  <IconButton icon={RiEditLine} colorScheme="blue">
+                  {/* <IconButton icon={RiEditLine} colorScheme="blue">
                     Edit
-                  </IconButton>
+                  </IconButton> */}
                   <IconButton icon={RiEditLine} colorScheme="red">
                     Delete
                   </IconButton>

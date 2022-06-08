@@ -17,7 +17,6 @@ export function Header() {
       h="20"
       mt="4"
       px="6"
-      maxW={1480}
       justify="space-between"
     >
       {!isWideVersion && (

@@ -4,7 +4,7 @@ import { Input } from '../../components/Form/Input'
 import { useAuth } from '../../contexts/AuthContext'
 
 export default function Login() {
-  const [email, setEmail] = useState('g.seganzerla@gmail.com')
+  const [email, setEmail] = useState('fake@email.com')
   const [password, setPassword] = useState('password')
 
   const { signIn } = useAuth()

@@ -5,17 +5,17 @@ import { destroyCookie } from 'nookies'
 export const api = axios.create({
   baseURL: 'http://localhost:80',
   withCredentials: true,
+  headers: {
+    'X-Requested-With': 'XMLHttpRequest',
+  },
 })
 
 api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response.status === 401) {
-      destroyCookie(undefined, 'accounts2.token')
+      destroyCookie(undefined, 'XSRF-TOKEN')
       destroyCookie(undefined, 'accounts2.uuid')
-      // destroyCookie(undefined, 'laravel_session')
-      // destroyCookie(undefined, 'XSRF-TOKEN')
-      
       Router.push('/auth/login')
     }
   }

@@ -1,6 +1,5 @@
 import axios from 'axios'
-import Router from 'next/router'
-import { destroyCookie } from 'nookies'
+import { signOut } from '../contexts/AuthContext'
 
 export const api = axios.create({
   baseURL: 'http://localhost:80',
@@ -14,9 +13,11 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response.status === 401) {
-      destroyCookie(undefined, 'XSRF-TOKEN')
-      destroyCookie(undefined, 'accounts2.uuid')
-      Router.push('/auth/login')
+      if (error.response.message === 'Unauthenticated.') {
+        signOut()
+      }
     }
+
+    return Promise.reject(error)
   }
 )

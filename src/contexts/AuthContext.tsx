@@ -1,5 +1,5 @@
-import { useRouter } from 'next/router'
-import { parseCookies, setCookie } from 'nookies'
+import Router, { useRouter } from 'next/router'
+import { destroyCookie, parseCookies } from 'nookies'
 import {
   createContext,
   ReactNode,
@@ -8,7 +8,6 @@ import {
   useState,
 } from 'react'
 import { api } from '../services/api'
-import { cookieConfig } from '../services/cookie'
 import { getXsrfToken } from '../services/xsrf'
 
 interface AuthProviderProps {
@@ -32,6 +31,12 @@ type LoginCredentials = {
   password: string
 }
 
+export function signOut() {
+  destroyCookie(undefined, 'XSRF-TOKEN')
+  destroyCookie(undefined, 'laravel_session')
+  Router.push('/auth/login')
+}
+
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
 export function AuthProvider({ children }: AuthProviderProps) {
@@ -40,7 +45,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const router = useRouter()
 
   useEffect(() => {
-    const { 'XSRF-TOKEN': token} = parseCookies()
+    const { 'XSRF-TOKEN': token } = parseCookies()
 
     if (token) {
       api.get(`/users/me`).then((response) => {
@@ -50,15 +55,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [])
 
   async function signIn({ email, password }: LoginCredentials) {
-    getXsrfToken()
+    await getXsrfToken()
 
     const response = await api.post('/auth/login', {
       email,
       password,
     })
 
-    const { user } = response.data
-    setUser(user)
+    console.log(response)
+
+    setUser(response.data.user)
 
     router.push('/')
   }

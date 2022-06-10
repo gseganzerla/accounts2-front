@@ -2,6 +2,7 @@ import { Box, Button, Flex, Stack } from '@chakra-ui/react'
 import { FormEvent, useState } from 'react'
 import { Input } from '../../components/Form/Input'
 import { useAuth } from '../../contexts/AuthContext'
+import { withSSRGuest } from '../../utils/withSSRGuest'
 
 export default function Login() {
   const [email, setEmail] = useState('fake@email.com')
@@ -47,3 +48,9 @@ export default function Login() {
     </Flex>
   )
 }
+
+export const getServerSideProps = withSSRGuest(async (ctx) => {
+  return {
+    props: {},
+  }
+})

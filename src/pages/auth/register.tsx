@@ -5,16 +5,17 @@ import { Input } from '../../components/Form/Input'
 import { useAuth } from '../../contexts/AuthContext'
 import { withSSRGuest } from '../../utils/withSSRGuest'
 
-export default function Login() {
-  const [email, setEmail] = useState('fake@email.com')
-  const [password, setPassword] = useState('password')
+export default function Register() {
+  const [email, setEmail] = useState('')
+  const [name, setName] = useState('')
+  const [password, setPassword] = useState('')
 
-  const { signIn } = useAuth()
+  const { register } = useAuth()
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault()
 
-    signIn({ email, password })
+    register({ email, password, name })
   }
 
   return (
@@ -28,11 +29,19 @@ export default function Login() {
       >
         <Stack spacing="4">
           <Input
+            name="name"
+            label="Name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+
+          <Input
             name="email"
             label="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+
           <Input
             name="password"
             label="Password"
@@ -43,9 +52,11 @@ export default function Login() {
         </Stack>
 
         <Stack mt="8" spacing="4">
-          <Button type="submit">Login</Button>
-          <Link href="/auth/register" passHref>
-            <Button as="a" variant="link">Sign up</Button>
+          <Button type="submit">Register</Button>
+          <Link href="/auth/login" passHref>
+            <Button as="a" variant="link">
+              Sign In
+            </Button>
           </Link>
         </Stack>
       </Box>

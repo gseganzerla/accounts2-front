@@ -12,13 +12,13 @@ export function Profile({ showProfileData = true }: ProfileProps) {
     <Flex align="center">
       {showProfileData && (
         <Box mr="4" textAlign="right">
-          <Text>{user?.name}</Text>
+          <Text>{user.name}</Text>
           <Text color="gray.300" fontSize="smal">
-            {user?.email}
+            {user.email}
           </Text>
         </Box>
       )}
-      <Avatar size="md" name={user?.name} />
+      <Avatar size="md" name={user.name} />
     </Flex>
   )
 }

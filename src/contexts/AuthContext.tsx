@@ -1,5 +1,5 @@
 import Router, { useRouter } from 'next/router'
-import { destroyCookie, parseCookies } from 'nookies'
+import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import {
   createContext,
   ReactNode,
@@ -8,6 +8,7 @@ import {
   useState,
 } from 'react'
 import { api } from '../services/api'
+import { cookieConfig } from '../services/cookie'
 import { getXsrfToken } from '../services/xsrf'
 
 interface AuthProviderProps {
@@ -22,20 +23,26 @@ type User = {
 
 type AuthContextData = {
   signIn: (credentials: LoginCredentials) => Promise<void>
-  isAuthenticated: boolean
+  register: (credentials: RegisterCredentials) => Promise<void>
   user: User
 }
 
-type LoginCredentials = {
+type LoginCredentials = Omit<RegisterCredentials, 'name'>
+
+type RegisterCredentials = {
   email: string
   password: string
+  name: string
 }
 
 export function signOut() {
+  destroyCookie(undefined, 'accounts2.isAuthenticated')
   destroyCookie(undefined, 'XSRF-TOKEN')
   destroyCookie(undefined, 'laravel_session')
   Router.push('/auth/login')
 }
+
+function login() {}
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
@@ -45,14 +52,28 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const router = useRouter()
 
   useEffect(() => {
-    const { 'XSRF-TOKEN': token } = parseCookies()
+    const { 'accounts2.isAuthenticated': isAuthenticated } = parseCookies()
 
-    if (token) {
+    if (isAuthenticated == 'true') {
       api.get(`/users/me`).then((response) => {
         setUser(response.data.user)
       })
     }
   }, [])
+
+  async function register({ email, password, name }: RegisterCredentials) {
+    await getXsrfToken()
+
+    const response = await api.post('/auth/register', {
+      email,
+      password,
+      name,
+    })
+
+    setCookie(undefined, 'accounts2.isAuthenticated', 'true', cookieConfig)
+    setUser(response.data.user)
+    router.push('/')
+  }
 
   async function signIn({ email, password }: LoginCredentials) {
     await getXsrfToken()
@@ -62,15 +83,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
       password,
     })
 
-    console.log(response)
-
+    setCookie(undefined, 'accounts2.isAuthenticated', 'true', cookieConfig)
     setUser(response.data.user)
-
     router.push('/')
   }
 
   return (
-    <AuthContext.Provider value={{ signIn, isAuthenticated, user }}>
+    <AuthContext.Provider value={{ signIn, register, user }}>
       {children}
     </AuthContext.Provider>
   )

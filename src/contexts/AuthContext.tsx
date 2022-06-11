@@ -42,7 +42,6 @@ export function signOut() {
   Router.push('/auth/login')
 }
 
-function login() {}
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 

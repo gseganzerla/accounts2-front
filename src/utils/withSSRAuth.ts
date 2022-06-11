@@ -11,7 +11,7 @@ export function withSSRAuth<P>(fn: GetServerSideProps<P>): GetServerSideProps {
   ): Promise<GetServerSidePropsResult<P>> => {
     const cookies = parseCookies(ctx)
 
-    if (!cookies['laravel_session'] || !cookies['XSRF-TOKEN']) {
+    if (!cookies['accounts2.isAuthenticated']) {
       return {
         redirect: {
           destination: '/auth/login',

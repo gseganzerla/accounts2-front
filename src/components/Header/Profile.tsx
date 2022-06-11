@@ -1,5 +1,6 @@
 import { Avatar, Box, Flex, Text } from '@chakra-ui/react'
 import { useAuth } from '../../contexts/AuthContext'
+import { MenuProfile } from './MenuProfile'
 
 interface ProfileProps {
   showProfileData?: boolean
@@ -18,7 +19,9 @@ export function Profile({ showProfileData = true }: ProfileProps) {
           </Text>
         </Box>
       )}
-      <Avatar size="md" name={user.name} />
+      <MenuProfile>
+        <Avatar size="md" name={user.name} />
+      </MenuProfile>
     </Flex>
   )
 }

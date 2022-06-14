@@ -1,5 +1,4 @@
 import {
-  ButtonGroup,
   Flex,
   Heading,
   Table,
@@ -9,22 +8,24 @@ import {
   Thead,
   Tr,
 } from '@chakra-ui/react'
-import Link from 'next/link'
-import { RiAddLine, RiClipboardLine, RiEditLine } from 'react-icons/ri'
-import { IconButton } from '../../components/IconButton'
+import { useQuery } from 'react-query'
 import { Page } from '../../components/Page'
+import { fetchAccounts } from '../../services/account'
 
-export default function index() {
+export default function Index() {
+  const { isLoading, data: accounts } = useQuery('accounts', fetchAccounts)
+  console.log(accounts?.length)
+
   return (
     <Page>
       <>
         <Flex justify="space-between" mb="8" align="center">
           <Heading>Accounts</Heading>
-          <Link href="/accounts/create" passHref>
+          {/* <Link href="/accounts/create" passHref>
             <IconButton as="a" icon={RiAddLine}>
               New Account
             </IconButton>
-          </Link>
+          </Link> */}
         </Flex>
 
         <Table>
@@ -38,25 +39,13 @@ export default function index() {
             </Tr>
           </Thead>
           <Tbody>
-            <Tr>
-              <Td>1</Td>
-              <Td>any username</Td>
-              <Td>email@email.com</Td>
-              <Td>any accounts</Td>
-              <Td>
-                <ButtonGroup size="sm" isAttached>
-                  <IconButton icon={RiClipboardLine} colorScheme="yellow">
-                    Copy
-                  </IconButton>
-                  {/* <IconButton icon={RiEditLine} colorScheme="blue">
-                    Edit
-                  </IconButton> */}
-                  <IconButton icon={RiEditLine} colorScheme="red">
-                    Delete
-                  </IconButton>
-                </ButtonGroup>
-              </Td>
-            </Tr>
+            {accounts?.map((account) => (
+              <Tr key={account.uuid}>
+                <Td>{account.username}</Td>
+                <Td>{account.email}</Td>
+                <Td>{account.account}</Td>
+              </Tr>
+            ))}
           </Tbody>
         </Table>
       </>

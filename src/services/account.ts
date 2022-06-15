@@ -20,10 +20,12 @@ export const fetchAccounts = async (): Promise<Accounts> => {
   return accounts
 }
 
-export const storeAccount = async (account: AccountFormData): Promise<Account> => {
+export const storeAccount = async (
+  account: AccountFormData
+): Promise<Account> => {
   const response = await api.post('accounts', account)
 
   const { account: storedAccount } = response.data
 
-  return response.data
+  return storedAccount
 }

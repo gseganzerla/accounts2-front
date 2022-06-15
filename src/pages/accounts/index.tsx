@@ -9,6 +9,7 @@ import {
   Th,
   Thead,
   Tr,
+  useToast,
 } from '@chakra-ui/react'
 import { RiClipboardLine, RiEditLine } from 'react-icons/ri'
 import { useQuery } from 'react-query'
@@ -22,6 +23,32 @@ export default function Index() {
     isFetching,
     data: accounts,
   } = useQuery('accounts', fetchAccounts)
+
+  const toast = useToast()
+
+  function handleCopyToClipboard(password: string | undefined) {
+    if (password) {
+      navigator.clipboard.writeText(password)
+
+      try {
+        toast({
+          title: 'Copied to clipboard sucessfully',
+          description: 'Password copied to clipboard',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        })
+      } catch (error) {
+        toast({
+          title: 'Error',
+          description: 'An error occurred while copying to clipboard',
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        })
+      }
+    }
+  }
 
   return (
     <Page>
@@ -61,9 +88,13 @@ export default function Index() {
 
                   <Td>
                     <ButtonGroup size="sm" isAttached>
-                      <IconButton icon={RiClipboardLine} colorScheme="yellow">
+                      {/* <IconButton
+                        icon={RiClipboardLine}
+                        colorScheme="yellow"
+                        onClick={() => handleCopyToClipboard(account.password)}
+                      >
                         Copy
-                      </IconButton>
+                      </IconButton> */}
                       {/* <IconButton icon={RiEditLine} colorScheme="blue">
                       Edit
                     </IconButton> */}

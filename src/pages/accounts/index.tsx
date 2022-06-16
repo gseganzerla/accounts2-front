@@ -2,63 +2,112 @@ import {
   ButtonGroup,
   Flex,
   Heading,
+  Spinner,
   Table,
   Tbody,
   Td,
   Th,
   Thead,
   Tr,
+  useToast,
 } from '@chakra-ui/react'
-import Link from 'next/link'
-import { RiAddLine, RiClipboardLine, RiEditLine } from 'react-icons/ri'
+import { RiClipboardLine, RiEditLine } from 'react-icons/ri'
+import { useQuery } from 'react-query'
 import { IconButton } from '../../components/IconButton'
 import { Page } from '../../components/Page'
+import { fetchAccounts } from '../../services/account'
 
-export default function index() {
+export default function Index() {
+  const {
+    isLoading,
+    isFetching,
+    data: accounts,
+  } = useQuery('accounts', fetchAccounts)
+
+  const toast = useToast()
+
+  function handleCopyToClipboard(password: string | undefined) {
+    if (password) {
+      navigator.clipboard.writeText(password)
+
+      try {
+        toast({
+          title: 'Copied to clipboard sucessfully',
+          description: 'Password copied to clipboard',
+          status: 'success',
+          duration: 3000,
+          isClosable: true,
+        })
+      } catch (error) {
+        toast({
+          title: 'Error',
+          description: 'An error occurred while copying to clipboard',
+          status: 'error',
+          duration: 9000,
+          isClosable: true,
+        })
+      }
+    }
+  }
+
   return (
     <Page>
       <>
         <Flex justify="space-between" mb="8" align="center">
-          <Heading>Accounts</Heading>
-          <Link href="/accounts/create" passHref>
+          <Heading>
+            Accounts
+            {!isLoading && isFetching && <Spinner color="gray.500" ml="4" />}
+          </Heading>
+          {/* <Link href="/accounts/create" passHref>
             <IconButton as="a" icon={RiAddLine}>
               New Account
             </IconButton>
-          </Link>
+          </Link> */}
         </Flex>
 
-        <Table>
-          <Thead>
-            <Tr>
-              <Th>#</Th>
-              <Th>Username</Th>
-              <Th>Email</Th>
-              <Th>Account</Th>
-              <Th>Action</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            <Tr>
-              <Td>1</Td>
-              <Td>any username</Td>
-              <Td>email@email.com</Td>
-              <Td>any accounts</Td>
-              <Td>
-                <ButtonGroup size="sm" isAttached>
-                  <IconButton icon={RiClipboardLine} colorScheme="yellow">
-                    Copy
-                  </IconButton>
-                  {/* <IconButton icon={RiEditLine} colorScheme="blue">
-                    Edit
-                  </IconButton> */}
-                  <IconButton icon={RiEditLine} colorScheme="red">
-                    Delete
-                  </IconButton>
-                </ButtonGroup>
-              </Td>
-            </Tr>
-          </Tbody>
-        </Table>
+        {isLoading ? (
+          <Flex justify="center">
+            <Spinner size="lg" />
+          </Flex>
+        ) : (
+          <Table>
+            <Thead>
+              <Tr>
+                <Th>Username</Th>
+                <Th>Email</Th>
+                <Th>Account</Th>
+                <Th>Action</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {accounts?.map((account) => (
+                <Tr key={account.uuid}>
+                  <Td>{account.username}</Td>
+                  <Td>{account.email}</Td>
+                  <Td>{account.account}</Td>
+
+                  <Td>
+                    <ButtonGroup size="sm" isAttached>
+                      {/* <IconButton
+                        icon={RiClipboardLine}
+                        colorScheme="yellow"
+                        onClick={() => handleCopyToClipboard(account.password)}
+                      >
+                        Copy
+                      </IconButton> */}
+                      {/* <IconButton icon={RiEditLine} colorScheme="blue">
+                      Edit
+                    </IconButton> */}
+                      <IconButton icon={RiEditLine} colorScheme="red">
+                        Delete
+                      </IconButton>
+                    </ButtonGroup>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        )}
       </>
     </Page>
   )

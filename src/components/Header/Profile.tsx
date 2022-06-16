@@ -1,21 +1,27 @@
 import { Avatar, Box, Flex, Text } from '@chakra-ui/react'
+import { useAuth } from '../../contexts/AuthContext'
+import { MenuProfile } from './MenuProfile'
 
 interface ProfileProps {
   showProfileData?: boolean
 }
 
 export function Profile({ showProfileData = true }: ProfileProps) {
+  const { user } = useAuth()
+
   return (
     <Flex align="center">
       {showProfileData && (
         <Box mr="4" textAlign="right">
-          <Text>Guilherme Seganzerla</Text>
+          <Text>{user.name}</Text>
           <Text color="gray.300" fontSize="smal">
-            g.seganzerla@gmail.com
+            {user.email}
           </Text>
         </Box>
       )}
-      <Avatar size="md" name="Guilherme Seganzerla" />
+      <MenuProfile>
+        <Avatar size="md" name={user.name} />
+      </MenuProfile>
     </Flex>
   )
 }

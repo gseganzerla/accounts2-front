@@ -11,10 +11,11 @@ import {
   Tr,
   useToast,
 } from '@chakra-ui/react'
-import { RiClipboardLine, RiEditLine } from 'react-icons/ri'
+import { RiEditLine } from 'react-icons/ri'
 import { useQuery } from 'react-query'
 import { IconButton } from '../../components/IconButton'
 import { Page } from '../../components/Page'
+import { useDialog } from '../../contexts/Dialog'
 import { fetchAccounts } from '../../services/account'
 
 export default function Index() {
@@ -23,6 +24,14 @@ export default function Index() {
     isFetching,
     data: accounts,
   } = useQuery('accounts', fetchAccounts)
+
+  const {
+    disclosure: { onOpen },
+  } = useDialog()
+
+  function handleDestroyAccount(uuid: string) {
+    onOpen()
+  }
 
   const toast = useToast()
 
@@ -98,7 +107,11 @@ export default function Index() {
                       {/* <IconButton icon={RiEditLine} colorScheme="blue">
                       Edit
                     </IconButton> */}
-                      <IconButton icon={RiEditLine} colorScheme="red">
+                      <IconButton
+                        icon={RiEditLine}
+                        colorScheme="red"
+                        onClick={() => handleDestroyAccount(account.uuid)}
+                      >
                         Delete
                       </IconButton>
                     </ButtonGroup>

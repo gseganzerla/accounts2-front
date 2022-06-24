@@ -29,3 +29,7 @@ export const storeAccount = async (
 
   return storedAccount
 }
+
+export const destroyAccount = async (uuid: string) => {
+  console.log('conta destruida')
+}

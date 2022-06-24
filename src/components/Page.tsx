@@ -1,5 +1,6 @@
 import { Box, Flex } from '@chakra-ui/react'
 import { ReactNode } from 'react'
+import { Dialog } from './Form/Dialog'
 import { Header } from './Header'
 import { Sidebar } from './Sidebar'
 
@@ -17,6 +18,7 @@ export function Page({ children }: PageProps) {
           {children}
         </Box>
       </Flex>
+      <Dialog />
     </Box>
   )
 }

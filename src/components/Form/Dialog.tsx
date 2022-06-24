@@ -13,6 +13,8 @@ import { useDialog } from '../../contexts/Dialog'
 export function Dialog() {
   const {
     disclosure: { isOpen, onClose },
+    dispatch,
+    state,
   } = useDialog()
   const cancelRef = useRef()
 
@@ -36,7 +38,11 @@ export function Dialog() {
             <Button ref={cancelRef} colorScheme="whiteAlpha" onClick={onClose}>
               Cancel
             </Button>
-            <Button colorScheme="red" onClick={onClose} ml={3}>
+            <Button
+              colorScheme="red"
+              onClick={() => dispatch(state.dispatchObject)}
+              ml={3}
+            >
               Delete
             </Button>
           </AlertDialogFooter>

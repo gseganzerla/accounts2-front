@@ -11,12 +11,13 @@ import {
   Tr,
   useToast,
 } from '@chakra-ui/react'
+import { useEffect } from 'react'
 import { RiEditLine } from 'react-icons/ri'
 import { useQuery } from 'react-query'
 import { IconButton } from '../../components/IconButton'
 import { Page } from '../../components/Page'
 import { useDialog } from '../../contexts/Dialog'
-import { fetchAccounts } from '../../services/account'
+import { destroyAccount, fetchAccounts } from '../../services/account'
 
 export default function Index() {
   const {
@@ -27,9 +28,16 @@ export default function Index() {
 
   const {
     disclosure: { onOpen },
+    state,
+    dispatch,
   } = useDialog()
 
   function handleDestroyAccount(uuid: string) {
+    dispatch({
+      type: 'dispatchObject',
+      payload: { type: destroyAccount, uuid: uuid },
+    })
+
     onOpen()
   }
 

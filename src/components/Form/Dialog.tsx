@@ -18,6 +18,12 @@ export function Dialog() {
   } = useDialog()
   const cancelRef = useRef()
 
+  function handleActionButton() {
+    dispatch(state.dispatchObject)
+
+    onClose()
+  }
+
   return (
     <AlertDialog
       isOpen={isOpen}
@@ -38,11 +44,7 @@ export function Dialog() {
             <Button ref={cancelRef} colorScheme="whiteAlpha" onClick={onClose}>
               Cancel
             </Button>
-            <Button
-              colorScheme="red"
-              onClick={() => dispatch(state.dispatchObject)}
-              ml={3}
-            >
+            <Button colorScheme="red" onClick={handleActionButton} ml={3}>
               Delete
             </Button>
           </AlertDialogFooter>

@@ -3,6 +3,7 @@ import {
   createContext,
   Dispatch,
   ReactNode,
+  useCallback,
   useContext,
   useReducer,
 } from 'react'
@@ -22,7 +23,8 @@ const DialogContext = createContext<DialogContextData>({} as DialogContextData)
 
 export function DialogProvider({ children }: DialogProviderProps) {
   const disclosure = useDisclosure()
-  const [state, dispatch] = useReducer(reducer, initialState)
+  const memoizerReducer = useCallback(reducer, [])
+  const [state, dispatch] = useReducer(memoizerReducer, initialState)
 
   return (
     <DialogContext.Provider value={{ disclosure, dispatch, state }}>

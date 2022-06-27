@@ -11,12 +11,12 @@ import {
   Tr,
   useToast,
 } from '@chakra-ui/react'
-import { useEffect } from 'react'
 import { RiEditLine } from 'react-icons/ri'
 import { useQuery } from 'react-query'
 import { IconButton } from '../../components/IconButton'
 import { Page } from '../../components/Page'
 import { useDialog } from '../../contexts/Dialog'
+import { useAsyncMutation } from '../../hooks/useAsyncMutation'
 import { destroyAccount, fetchAccounts } from '../../services/account'
 
 export default function Index() {
@@ -32,10 +32,21 @@ export default function Index() {
     dispatch,
   } = useDialog()
 
+  const { mutateAsync } = useAsyncMutation({
+    fn: destroyAccount,
+    query: 'accounts',
+  })
+
   function handleDestroyAccount(uuid: string) {
     dispatch({
       type: 'dispatchObject',
-      payload: { type: destroyAccount, uuid: uuid },
+      payload: {
+        type: 'asyncMutation',
+        payload: {
+          fn: mutateAsync,
+          param: uuid,
+        },
+      },
     })
 
     onOpen()

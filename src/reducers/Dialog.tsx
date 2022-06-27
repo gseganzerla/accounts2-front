@@ -1,5 +1,3 @@
-import { destroyAccount } from '../services/account'
-
 type initialStateProps = {
   fn: any
   dispatchObject: {}
@@ -11,21 +9,31 @@ export const initialState: initialStateProps = {
 }
 
 const dialogActions = {
-  destroyAccount: destroyAccount,
+  asyncMutation: 'asyncMutation',
   dispatchObject: 'dispatchObject',
 }
 
-export function reducer(state: any, action: any) {
+type Action = {
+  type: string
+  payload: {
+    fn: Function
+    param?: any
+  }
+}
+
+export function reducer(state: any, action: Action) {
   switch (action.type) {
     case dialogActions.dispatchObject:
+      console.log('eu to aki');
+      
       return { dispatchObject: action.payload }
 
-    case dialogActions.destroyAccount:
-      destroyAccount(action.uuid).then()
+    case dialogActions.asyncMutation:
+      action.payload.fn(action.payload.param)
 
-      return { ...state }
+      return state
 
     default:
-      break
+      return state
   }
 }

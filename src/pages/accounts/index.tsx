@@ -11,11 +11,13 @@ import {
   Tr,
   useToast,
 } from '@chakra-ui/react'
-import { RiClipboardLine, RiEditLine } from 'react-icons/ri'
+import { RiEditLine } from 'react-icons/ri'
 import { useQuery } from 'react-query'
 import { IconButton } from '../../components/IconButton'
 import { Page } from '../../components/Page'
-import { fetchAccounts } from '../../services/account'
+import { useDialog } from '../../contexts/Dialog'
+import { useAsyncMutation } from '../../hooks/useAsyncMutation'
+import { destroyAccount, fetchAccounts } from '../../services/account'
 
 export default function Index() {
   const {
@@ -23,6 +25,32 @@ export default function Index() {
     isFetching,
     data: accounts,
   } = useQuery('accounts', fetchAccounts)
+
+  const {
+    disclosure: { onOpen },
+    state,
+    dispatch,
+  } = useDialog()
+
+  const { mutateAsync } = useAsyncMutation({
+    fn: destroyAccount,
+    query: 'accounts',
+  })
+
+  function handleDestroyAccount(uuid: string) {
+    dispatch({
+      type: 'dispatchObject',
+      payload: {
+        type: 'asyncMutation',
+        payload: {
+          fn: mutateAsync,
+          param: uuid,
+        },
+      },
+    })
+
+    onOpen()
+  }
 
   const toast = useToast()
 
@@ -98,7 +126,11 @@ export default function Index() {
                       {/* <IconButton icon={RiEditLine} colorScheme="blue">
                       Edit
                     </IconButton> */}
-                      <IconButton icon={RiEditLine} colorScheme="red">
+                      <IconButton
+                        icon={RiEditLine}
+                        colorScheme="red"
+                        onClick={() => handleDestroyAccount(account.uuid)}
+                      >
                         Delete
                       </IconButton>
                     </ButtonGroup>

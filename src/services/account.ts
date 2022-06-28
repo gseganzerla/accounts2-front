@@ -29,3 +29,8 @@ export const storeAccount = async (
 
   return storedAccount
 }
+
+export const destroyAccount = async (uuid: string) => {
+  await api.delete(`accounts/${uuid}`)
+
+}

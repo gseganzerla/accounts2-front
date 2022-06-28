@@ -4,13 +4,13 @@ import { useForm } from 'react-hook-form'
 import { Input } from '../../components/Form/Input'
 import { Page } from '../../components/Page'
 import { StackedButtonGroup } from '../../components/StackedButtonGroup'
-import { useMutationAsync } from '../../hooks/useMutationAsync'
+import { useAsyncMutation } from '../../hooks/useAsyncMutation'
 import { AccountFormData, storeAccount } from '../../services/account'
 
 export default function CreateAccount() {
   const { register, handleSubmit } = useForm<AccountFormData>()
 
-  const { mutateAsync, isLoading } = useMutationAsync({
+  const { mutateAsync, isLoading } = useAsyncMutation({
     fn: storeAccount,
     query: 'accounts',
     redirect: '/accounts',

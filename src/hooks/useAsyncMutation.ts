@@ -8,7 +8,7 @@ interface UseMutationNamedArgs {
   redirect?: string
 }
 
-export const useMutationAsync = ({
+export const useAsyncMutation = ({
   fn,
   query,
   redirect,

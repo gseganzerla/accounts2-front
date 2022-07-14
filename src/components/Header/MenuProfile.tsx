@@ -1,4 +1,5 @@
 import { Menu, MenuButton, MenuItem, MenuList } from '@chakra-ui/react'
+import Link from 'next/link'
 import { ReactNode } from 'react'
 import { signOut } from '../../contexts/AuthContext'
 
@@ -20,7 +21,9 @@ export function MenuProfile({ children }: MenuProfileProps) {
             bg: 'pink.500',
           }}
         >
-          Profile
+          <Link href="/users/profile" passHref>
+            Profile
+          </Link>
         </MenuItem>
         <MenuItem
           _hover={{

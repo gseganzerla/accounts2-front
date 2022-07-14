@@ -12,7 +12,7 @@ export const fetchMe = async () => {
 export const updateUser = async (user: User): Promise<User> => {
   const response = await api.put(`users/${user.identify}`, user)
 
-  const { userEdit } = response.data
+  const { user: userEdit } = response.data
 
   return userEdit
 }

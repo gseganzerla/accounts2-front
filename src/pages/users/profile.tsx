@@ -3,7 +3,6 @@ import { useEffect } from 'react'
 import { useForm } from 'react-hook-form'
 import { Input } from '../../components/Form/Input'
 import { Page } from '../../components/Page'
-import { SpinnerSm } from '../../components/SpinnerSm'
 import { StackedButtonGroup } from '../../components/StackedButtonGroup'
 import { useAuth } from '../../contexts/AuthContext'
 import { useAsyncMutation } from '../../hooks/useAsyncMutation'
@@ -12,7 +11,6 @@ import { User } from '../../types/userTypes'
 
 export default function Profile() {
   const { register, handleSubmit, setValue } = useForm<User>()
-  // const { isLoading, data: user } = useQuery('user', fetchMe)
   const { user, setUser } = useAuth()
   const { mutateAsync, isLoading: isMutationLoading } = useAsyncMutation({
     fn: updateUser,
@@ -20,18 +18,14 @@ export default function Profile() {
   })
 
   useEffect(() => {
-    setValue('email', user?.email)
-    setValue('name', user?.name)
-    
+    setValue('email', user.email)
+    setValue('name', user.name)
   }, [user, setValue])
 
   async function handleUpdateUser(data: User) {
-    data.identify = user?.identify
+    data.identify = user.identify
 
-    const response = await mutateAsync(data)
-
-    console.log(response);
-    
+    setUser(await mutateAsync(data))
   }
 
   return (

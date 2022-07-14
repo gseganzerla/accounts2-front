@@ -2,7 +2,9 @@ import Router, { useRouter } from 'next/router'
 import { destroyCookie, parseCookies, setCookie } from 'nookies'
 import {
   createContext,
+  Dispatch,
   ReactNode,
+  SetStateAction,
   useContext,
   useEffect,
   useState,
@@ -10,21 +12,17 @@ import {
 import { api } from '../services/api'
 import { cookieConfig } from '../services/cookie'
 import { getXsrfToken } from '../services/xsrf'
+import { User } from '../types/userTypes'
 
 interface AuthProviderProps {
   children: ReactNode
-}
-
-type User = {
-  name: string
-  email: string
-  uuid: string
 }
 
 type AuthContextData = {
   signIn: (credentials: LoginCredentials) => Promise<void>
   register: (credentials: RegisterCredentials) => Promise<void>
   user: User
+  setUser: Dispatch<SetStateAction<User>>
 }
 
 type LoginCredentials = Omit<RegisterCredentials, 'name'>
@@ -41,7 +39,6 @@ export function signOut() {
   destroyCookie(undefined, 'laravel_session')
   Router.push('/auth/login')
 }
-
 
 const AuthContext = createContext<AuthContextData>({} as AuthContextData)
 
@@ -88,7 +85,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }
 
   return (
-    <AuthContext.Provider value={{ signIn, register, user }}>
+    <AuthContext.Provider value={{ signIn, register, user, setUser }}>
       {children}
     </AuthContext.Provider>
   )

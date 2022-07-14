@@ -13,7 +13,7 @@ export default function CreateAccount() {
   const { mutateAsync, isLoading } = useAsyncMutation({
     fn: storeAccount,
     query: 'accounts',
-    redirect: '/accounts',
+    // redirect: '/accounts',
   })
 
   function handleStoreTask(data: AccountFormData) {
